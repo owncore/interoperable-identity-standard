@@ -1,6 +1,4 @@
-# Towards an Interoperable Identity Standard
-
-# Why an Interoperable Identity Standard?
+# Why Interoperability?
 
 In order to make decentralized identity the new normal, interoperability is a requirement. Interoperability means a user can log in to any app with any of their online personas and frictionlessly switch between them. Interoperability means shared standards for safe and cohesive experiences across the internet. Interoperability means less data monopolies. Interoperability is the goal.
 
@@ -10,15 +8,18 @@ We’re reaching an inflection point - decentralized identity has an opportunity
 
 This post is meant to serve as a starting point to discuss and eventually agree on an Interoperable Identity Standard (IIS). My hope is to work with the many teams and individuals in this space to finalize an IIS, so we show the world what a healthier internet looks like and actually realize it.
 
-# A Proposed IIS
-![](https://paper-attachments.dropbox.com/s_D0889F123BA9EB8353EC168327537653856FB8F24DF659D1A16F99919F7D2C28_1634321328931_000.png)
+## Proposal for an Interoperable Identity Standard
 
-## IIS TLDR:
+![](./_DIAGRAMS/diagram_1.png)
+
+### Interoperable Identity Standard Key Features:
+
 - A [W3C spec compliant decentralized identifier](https://www.w3.org/TR/did-core) (DID) based framework.
 - Every unique entity is the subject of a DID.
 - Every DID points to a service registry, which stores pointers to any number of DID “services” such as data storage, data permissioning, data synchronization, data archiving, verified credential issuing…etc that the originating DID has registered with.
 - Each service is also treated as a unique entity; it also has a DID, which points to a service registry.
 - Verified credentialing storage and permissioning services can serve as the basis of robust reputation and sybil resistance systems.
+
 ## Key Provider
 
 A key provider takes care of three core responsibilities:
@@ -27,24 +28,24 @@ A key provider takes care of three core responsibilities:
 - encrypt data
 - decrypt data
 
-These responsibilities are important for upstream operations. 
+These responsibilities are important for upstream operations.
 
 Key providers can be non-custodial, putting users in total control of their keys. For example, [Rainbow Wallet](https://rainbow.me/), [MetaMask](https://metamask.io/), or [Ledger](https://www.ledger.com/) could serve as non-custodial key providers.
 
 Key providers can also be semi-custodial or custodial. A semi-custodial key provider might look like [Magic Link](https://magic.link/docs/api-reference/client-side-sdks/web), and a custodial key provider could be a service like [Google KMS.](https://cloud.google.com/security-key-management)
 
-A healthy IIS makes it easy for users to choose from several Key provider options and migrate from one option to another. 
+A healthy IIS makes it easy for users to choose from several Key provider options and migrate from one option to another.
 
 ## DID Provider
 
-In our system, a DID represents a unique entity (or “[subject](https://www.w3.org/TR/did-core/#did-subject)” according to the official DID vocabularies). An “entity” could be a human, a group, an application, a data store… or any unique “thing” that can be pointed to from other entities in a graph. 
+In our system, a DID represents a unique entity (or “[subject](https://www.w3.org/TR/did-core/#did-subject)” according to the official DID vocabularies). An “entity” could be a human, a group, an application, a data store… or any unique “thing” that can be pointed to from other entities in a graph.
 
-Due to the large number of DID methods (with more incoming), an entity like a user, org, or application must have flexibility when deciding which DID provider to use based on its needs in any given context. Different DID methods are purposed for different use cases and come with trade-offs. For instance, `[did:key](https://w3c-ccg.github.io/did-method-key)` does not rely on network calls to resolve DID documents, making it a justifiable choice for users that care about uptime and speed when performing actions on a network. The trade-off is `did:key` is limited in its flexibility and usefulness. Alternatively, `[did:3](https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-79/CIP-79.md)` is built with more features like key-rotation and DID document anchoring / commit services, but it currently relies heavily on the [Ceramic network](https://ceramic.network/). This means things like resolving DID documents might take longer (because doc resolution involves network requests) or even go offline for periods of time due to any future bottlenecks or potential problems with Ceramic network conditions. 
+Due to the large number of DID methods (with more incoming), an entity like a user, org, or application must have flexibility when deciding which DID provider to use based on its needs in any given context. Different DID methods are purposed for different use cases and come with trade-offs. For instance, `[did:key](https://w3c-ccg.github.io/did-method-key)` does not rely on network calls to resolve DID documents, making it a justifiable choice for users that care about uptime and speed when performing actions on a network. The trade-off is `did:key` is limited in its flexibility and usefulness. Alternatively, other DID methods can be built with more features, but not without tradeoffs - for example, more complex DID methods may rely on network requests to resolve DID Documents, which will take longer and open up new attack vectors.
 
-More information on the [W3C DID specification](https://www.w3.org/TR/did-core/). See the many DID methods on the [W3C's official DID registry](https://www.w3.org/TR/did-spec-registries/#did-methods). 
+More information on the [W3C DID specification](https://www.w3.org/TR/did-core/). See the many DID methods on the [W3C's official DID registry](https://www.w3.org/TR/did-spec-registries/#did-methods).
 
 **DID provider reliance on Key provider**
-The key provider is the “controller” of a DID. Signatures are requested by the DID provider and executed by the Key provider to perform actions like authoring changes to the DID itself, delegating access roles to a specific data store, or proving ownership over content or crypto-assets. 
+The key provider is the “controller” of a DID. Signatures are requested by the DID provider and executed by the Key provider to perform actions like authoring changes to the DID itself, delegating access roles to a specific data store, or proving ownership over content or crypto-assets.
 
 Decoupling the key provider from the DID provider increases the flexibility in how users compose their online identities. Mainstream users might choose a custodial key provider and `did:key` for a fast and familiar web UX, akin to logging in to Twitter or Instagram. Other users might select a combination of non-custodial and semi-custodial key providers as controllers for a `did:3` to recreate a multi-factor authentication UX flow for sharing more sensitive data or authorizing contractual agreements.
 
@@ -52,29 +53,25 @@ Decoupling the key provider from the DID provider increases the flexibility in h
 
 DIDs should be able to register with different service providers for jobs like data backups, data storage / permissioning, notifications… etc. The DID service registry can be thought of as a “root” or “head” node in a graph that contains one or more pointers to all the important DID services that a DID might rely on.
 
-Services themselves are subjects represented by DIDs. Machine readable information about services and how to interact with them should be encoded in the service’s associated DID Document. This approach allows teams to continue building out their own standards and strategies that make the most sense *for their service*, without the highest level architecture having to care about the micro strategies employed by individual services. This means the same user should be able to seamlessly interact on services like Mastodon, Matrix, and Urbit, even when the underlying data structures, standards, and permissioning of those services are completely different from one another. It also means the user can employ any number of centralized and decentralized services that make sense in their context.
+Services themselves are subjects represented by DIDs. Machine readable information about services and how to interact with them should be encoded in the service’s associated DID Document. This approach allows teams to continue building out their own standards and strategies that make the most sense _for their service_, without the highest level architecture having to care about the micro strategies employed by individual services. This means the same user should be able to seamlessly interact on services like Mastodon, Matrix, and Urbit, even when the underlying data structures, standards, and permissioning of those services are completely different from one another. It also means the user can employ any number of centralized and decentralized services that make sense in their context.
 
-
-![](https://paper-attachments.dropbox.com/s_D0889F123BA9EB8353EC168327537653856FB8F24DF659D1A16F99919F7D2C28_1634321412336_002.png)
-
+![](./_DIAGRAMS/diagram_2.png)
 
 Services can also link together in a cyclic graph structure, to point to other services that the service itself relies on.
 
-![](https://paper-attachments.dropbox.com/s_D0889F123BA9EB8353EC168327537653856FB8F24DF659D1A16F99919F7D2C28_1634321427379_003.png)
-
+![](./_DIAGRAMS/diagram_3.png)
 
 The graph-like service structure enables machine readable instructions for interacting with any type of DID related service by recursively iterating through a specific sub-tree.
 
-The registry is an area of the stack that intuitively seems like valuable real estate to occupy. However, if we build in the ability for a DID provider to point to its own service registry, or for a DID provider to potentially act as an embedded service registry itself, then the initially chosen technologies are not bound to dominate the DID ecology in the long term. This essentially means moving the Identity’s “root” node up one level higher to its own DID Document. 
+The registry is an area of the stack that intuitively seems like valuable real estate to occupy. However, if we build in the ability for a DID provider to point to its own service registry, or for a DID provider to potentially act as an embedded service registry itself, then the initially chosen technologies are not bound to dominate the DID ecology in the long term. This essentially means moving the Identity’s “root” node up one level higher to its own DID Document.
 
-![Illustrates how the standard scales to support any number of service registries](https://paper-attachments.dropbox.com/s_D0889F123BA9EB8353EC168327537653856FB8F24DF659D1A16F99919F7D2C28_1634321438475_004.png)
-
+![Illustrates how the standard scales to support any number of service registries](./_DIAGRAMS/diagram_4.png)
 
 There are a number of unsolved challenges that present themselves in this area of the stack:
 
-1. Not all DID methods can resolve to mutable DID documents, which means that we *at least* need to choose a default service registry for DID methods such `did:key`.
-2. Registries must agree on a minimum data standard and vocabulary set in order for them to be seamlessly pluggable and migrateable. 
-3. There could be an enormous number of services that get built, each with their own standards and strategies - how can this scale? 
+1. Not all DID methods can resolve to mutable DID documents, which means that we _at least_ need to choose a default service registry for DID methods such `did:key`.
+2. Registries must agree on a minimum data standard and vocabulary set in order for them to be seamlessly pluggable and migrateable.
+3. There could be an enormous number of services that get built, each with their own standards and strategies - how can this scale?
 
 Today, I think [IDX](https://idx.xyz/) and [ENS](https://ens.domains/)+[IPNS](https://docs.ipfs.io/concepts/ipns/) are well positioned to be DID service registry candidates. I will follow up with another post diving deeper into these two alternatives for the DID service registry.
 
@@ -99,8 +96,7 @@ One way to accomplish this is to represent service providers as DIDs. The DID Su
 
 ## Permissions Manager
 
-At a high level, a DID’s permissions manager has three responsibilities: 
-
+At a high level, a DID’s permissions manager has three responsibilities:
 
 1. Enforce access control rules written on DID Documents that belong or associate with the root DID. A common example would be issuing a web or mobile application an access token to user data at the user’s request.
 2. Bookkeep changes to the root DID and its services via DID Documents.
@@ -108,7 +104,7 @@ At a high level, a DID’s permissions manager has three responsibilities:
 A permissions manager can take different forms. A user’s chosen permissions manager might be packaged in a web application that manages permissions via an OAuth-like DID protocol. An application’s permissions manager might be composed of a daemon and CLI, and implement an alternative auth strategy.
 
 **Login to applications with OAuth and a permissions manager - two concrete examples**
-[+Login to Applications with the PDM](https://paper.dropbox.com/doc/Login-to-Applications-with-the-PDM-QbHr8xjSkxkYtV1t36u35) 
+[+Login to Applications with a Permissions Manager](https://github.com/owncore/interoperable-identity-standard/blob/primary/PERMISSIONS_MANAGER.md)
 
 # Reputation and sybil resistance
 
@@ -122,9 +118,10 @@ Verified credentials can serve as sound, foundational reputation building blocks
 
 Entire SDKs and APIs can be built around the verified credential store of a DID. For example, a centralized crypto exchange in the US might open source an SDK that loads verified credentials from a DID and computes a “KYC Score” that represents a risk factor for being in or out of compliance with government regulations. Alternatively, the next big NFT project might wish to allow 1 NFT per unique human, and build an API for asserting the user has at least 3 social media accounts with more than 500 total followers or 1000 total likes.
 
-# Moving Forward 
+In this article, I discuss a _hypothetical_ [verifiable credentialing service](https://github.com/owncore/interoperable-identity-standard/blob/primary/VERIFIABLE_CREDENTIAL.md).
 
-It’s time to show the Google’s, the Apple’s, and opposers alike that we can achieve an Interoperable Identity Standard together. Next steps for me - rally together the opinionated folks, the OG’s of decentralized identity, the early web tribes, and together, create the best possible standard that moves all of us forward.
+# Towards an Interoperable Identity Standard
 
-If you have feedback, comments, questions…etc, please file an issue.
+It’s time to show the [Google’s, the Apple’s, and opposers alike](https://www.evernym.com/blog/w3c-vision-of-decentralization) that we can achieve an Interoperable Identity Standard together. Next steps for me - rally together the opinionated folks, the OG’s of decentralized identity, the early web tribes, and together, create the best possible standard that moves all of us forward.
 
+If you have feedback, comments, questions…etc, please [file an issue](https://github.com/owncore/interoperable-identity-standard/issues).
