@@ -1,10 +1,12 @@
+![](./LOGO.png)
+
 # Why Interoperability?
 
 In order to make decentralized identity the new normal, interoperability is a requirement. Interoperability means a user can log in to any app with any of their online personas and frictionlessly switch between them. Interoperability means shared standards for safe and cohesive experiences across the internet. Interoperability means less data monopolies. Interoperability is the goal.
 
 Interoperable identity is a hard problem to solve. It’s difficult at the technical level because it requires dealing with immature technologies whose scale is barely tested, business models non-existent, and financial situations opaque. It’s difficult at the human coordination level because it requires highly opinionated groups of people to agree with one another on technical strategies - some of which could have huge economic impacts.
 
-We’re reaching an inflection point - decentralized identity has an opportunity to subvert the internet’s identity model at a time when momentum and desire to change is at an all time high. By focusing on interoperability, we can defeat the [opposition](https://www.evernym.com/blog/w3c-vision-of-decentralization/#webinar) in their attempts to squash DID’s as an approved W3C standard and realize a healthier internet for end users. If YOU care about decentralized identity, YOU should care about interoperable identity.
+We’re reaching an inflection point - decentralized identity has an opportunity to subvert the internet’s identity model at a time when momentum and desire to change is at an all time high. By focusing on interoperability, we can counter the [objections](https://www.evernym.com/blog/w3c-vision-of-decentralization) to DIDs being an approved W3C standard and realize a healthier internet for end users. If YOU care about decentralized identity, YOU should care about interoperable identity.
 
 This post is meant to serve as a starting point to discuss and eventually agree on an Interoperable Identity Standard (IIS). My hope is to work with the many teams and individuals in this space to finalize an IIS, so we show the world what a healthier internet looks like and actually realize it.
 
